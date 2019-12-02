@@ -1,9 +1,7 @@
-module TerrasmsApi
-  class Exception
-
-    def self.call(&block)
-      response = yield
-      response
+class TerrasmsApi
+  class Error
+    def self.call
+      yield
     rescue RestClient::Exception, RestClient::ExceptionWithResponse => e
       raise TerrasmsApi::RequestError, e
     rescue SocketError => e

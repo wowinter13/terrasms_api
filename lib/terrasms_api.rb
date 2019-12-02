@@ -1,23 +1,20 @@
-require "terrasms_api/version"
-
-module TerrasmsApi
-  class TerrasmsApi::ConnectionError < StandardError;
-  class TerrasmsApi::RequestError < StandardError;
+class TerrasmsApi
+  class TerrasmsApi::ConnectionError < StandardError; end
+  class TerrasmsApi::RequestError < StandardError; end
 
   autoload :Request, 'terrasms_api/request'
-  autoload :Exception, 'terrasms_api/exception'
-  autoload :Client, 'terrasms_api/exception'
+  autoload :Error, 'terrasms_api/error'
 
   attr_reader :access_token, :options
 
-  def initialize(access_token: nil, options={})
+  def initialize(access_token, options={})
     @access_token = access_token
-    @options = options.to_h.deep_symbolize_keys
+    @options = options
   end
 
   %i[get put post].each do |method|
     define_method(method) do |path, **args|
-      request_object.method(path, args)
+      request_object.public_send(method, path, **args)
     end
   end
 

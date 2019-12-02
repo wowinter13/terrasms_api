@@ -1,0 +1,11 @@
+{
+  "status": 0,
+  "status_description": "OK",
+  "message_infos": [
+    {
+      "msisdn": "78001234567890",
+      "id": "566668915",
+      "status": 0
+    }
+  ]
+}

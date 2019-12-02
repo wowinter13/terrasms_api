@@ -1,17 +1,21 @@
-module TerrasmsApi
+require 'digest'
+require 'rest-client'
+
+class TerrasmsApi
   class Request
     API_BASE_URL = 'https://auth.terasms.ru/outbox'.freeze
 
     attr_reader :access_token
 
-    def initialize(access_token: access_token)
+    def initialize(access_token:)
       @access_token = access_token
     end
 
     %i[get put post].each do |method|
       define_method(method) do |path, **args|
         response = with_handled_errors do
-          RestClient.method(
+          RestClient.public_send(
+            method,
             build_full_url(path),
             body_params(args),
             headers
@@ -29,7 +33,10 @@ module TerrasmsApi
     end
 
     def body_params(args = {})
-      md5_sign = [args.to_query, access_token].join('')
+      md5_sign = Digest::MD5.hexdigest([
+        RestClient::Utils.encode_query_string(args),
+        access_token
+      ].join(''))
 
       args.merge(sign: md5_sign)
     end
@@ -39,7 +46,7 @@ module TerrasmsApi
     end
 
     def with_handled_errors
-      Exception::(&yield)
+      TerrasmsApi::Error.call { yield }
     end
 
     def parsed_body(response)
