@@ -1,5 +1,6 @@
 require 'digest'
 require 'rest-client'
+require 'json'
 
 class TerrasmsApi
   class Request
@@ -33,8 +34,9 @@ class TerrasmsApi
     end
 
     def body_params(args = {})
+      asc_args = Hash[ args.sort_by { |key, val| key } ]
       md5_sign = Digest::MD5.hexdigest([
-        RestClient::Utils.encode_query_string(args),
+        RestClient::Utils.encode_query_string(asc_args).tr('&', ''),
         access_token
       ].join(''))
 

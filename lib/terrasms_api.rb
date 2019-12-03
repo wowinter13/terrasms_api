@@ -7,7 +7,7 @@ class TerrasmsApi
 
   attr_reader :access_token, :options
 
-  def initialize(access_token, options={})
+  def initialize(access_token:, **options)
     @access_token = access_token
     @options = options
   end
