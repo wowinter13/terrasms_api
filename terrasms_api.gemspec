@@ -7,11 +7,11 @@ Gem::Specification.new do |spec|
   spec.name          = "terrasms_api"
   spec.version       = TerrasmsApi::VERSION
   spec.authors       = ["wowinter13"]
-  spec.email         = ["vla-dy@yandex.ru"]
+  spec.email         = ["gotta.go.vlad@gmail.com"]
 
   spec.summary       = %q{Terra SMS HTTPS API Wrapper}
   spec.description   = %q{Client for Terra SMS Provider API.}
-  spec.homepage      = "https://github.com/severgroup-tt/terrasms_api"
+  spec.homepage      = "https://github.com/wowinter13/terrasms_api"
   spec.license       = "MIT"
 
   # Specify which files should be added to the gem when it is released.
@@ -26,8 +26,8 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'json', '~> 2.2'
   spec.add_runtime_dependency 'rest-client', '~> 2.1'
 
-  spec.add_development_dependency "bundler", "~> 1.17"
-  spec.add_development_dependency "rake", "~> 10.0"
+  spec.add_development_dependency "bundler", "~> 2.2.22"
+  spec.add_development_dependency "rake", "~> 12.3"
   spec.add_development_dependency "rspec", "~> 3.9.0"
   spec.add_development_dependency "rspec-json_expectations", "~>2.2.0"
   spec.add_development_dependency "webmock", "~> 2.3"

@@ -39,11 +39,11 @@ describe TerrasmsApi::Request do
         login: 'cool-login',
         target: '88005553535',
         sender: 'RubyGems',
-        message: '1212'
+        message: '1212%:/'
       }
     end
 
-    let(:correct_md5) { Hash[:sign, 'c3612425f27d62c9b5c8f51cdd696355'] }
+    let(:correct_md5) { Hash[:sign, '7a4f96fc65e5fa3d330122ece736e901'] }
 
     subject { request.post('send', options) }
 
@@ -53,6 +53,34 @@ describe TerrasmsApi::Request do
         .with(anything, options.merge(correct_md5), anything)
 
       subject
+    end
+  end
+
+  describe 'internal error' do
+    before do
+      stub_request(:any, 'https://auth.terasms.ru/outbox/send')
+        .to_return(body: internal_error_code.to_s)
+    end
+
+    let(:internal_error_code) { -rand(100) - 1 }
+
+    let(:options) do
+      {
+        login: 'cool-login',
+        target: '88005553535',
+        sender: 'RubyGems',
+        message: '1212'
+      }
+    end
+
+    subject { request.post('send', options) }
+
+    it 'raise internal_error' do
+      expect { subject }.to(
+        raise_error(
+          "Internal error: #{internal_error_code} see https://terasms.ru/documentation/api/http/errors"
+        )
+      )
     end
   end
 end

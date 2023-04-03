@@ -36,7 +36,7 @@ class TerrasmsApi
     def body_params(args = {})
       asc_args = Hash[ args.sort_by { |key, val| key } ]
       md5_sign = Digest::MD5.hexdigest([
-        RestClient::Utils.encode_query_string(asc_args).tr('&', ''),
+        RestClient::Utils.flatten_params(asc_args).map { |k, v| v.nil? ? k : "#{k}=#{v}" }.join,
         access_token
       ].join(''))
 
